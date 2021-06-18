@@ -1,0 +1,20 @@
+extends ../base.pug
+block content
+    .container
+        .columns.is-centered
+            .column.box.my-6.is-5
+                form
+                    .field
+                        label.label(for='email') Email:
+                        .control.has-icons-left
+                            input.input(type='email' placeholder='email' name='email' required)
+                            span.icon.is-small.is-left
+                                i.fas.fa-envelope
+                        p.is-danger.help.email
+
+                    .field
+                        .control
+                            button.button.is-primary(type='submit') Submit
+
+block scripts
+    script(src='/js/forgotPassword.js')

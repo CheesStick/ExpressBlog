@@ -1,0 +1,25 @@
+extends ../base.pug
+block content
+    .container
+        .columns.is-centered
+            .column.box.my-6.is-5
+                form(action='/blogs' method='post')
+                    
+                    .field
+                        label(class='label' for='title') Title: 
+                        .control
+                            input(class='input' name='title' id='title' placeholder='title' type='text' required)
+
+                    .field
+                        label(class='label' for='snippet') Snippet: 
+                        .control
+                            input(class='input' name='snippet' id='snippet' placeholder='snippet' type='text' required)
+
+                    .field
+                        label(class='label' for='content') Content:
+                        .control
+                            textarea(class='textarea has-fixed-size' name='content' id='content' placeholder='content' type='text' cols="20" rows="10" required)
+
+                    .field
+                        .control
+                            button(class='button is-primary' type='submit') Submit

@@ -1,0 +1,24 @@
+nav.navbar.has-background-light(role='navigation' aria-label='main navigation')
+    .navbar-brand
+        a.navbar-item(href='/')
+            .title ExpressBlog
+
+        a.navbar-burger(role='button' aria-label='menu' aria-expanded='false' data-target='navbarBasicExample')
+            span(aria-hidden='true')
+            span(aria-hidden='true')
+            span(aria-hidden='true')
+
+    #navbarBasicExample.navbar-menu.my-4
+        .navbar-start
+            a.navbar-item(href='/blogs') Home
+            a.navbar-item(href='/about') About
+        .navbar-end
+            if user
+                a.navbar-item(href='/blogs/create') Create a Blog
+                a.navbar-item(href='/account') Account
+                a.navbar-item.button.is-primary(href='/logout') Logout
+            else
+                .navbar-item
+                    .buttons
+                        a.navbar-item.button.is-primary(href='/login') Log in
+                        a.navbar-item.button.is-light(href='/register') Sign up

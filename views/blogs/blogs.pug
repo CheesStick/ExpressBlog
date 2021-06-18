@@ -1,0 +1,14 @@
+extends ../base.pug
+block content
+    .container
+        if blogs.length > 0
+            each blog in blogs
+                .columns
+                    .column.my-5.is-5
+                        a(href='/blogs/' + blog._id)
+                            .title.has-text-weight-normal #{blog.title}
+                            .subtitle  #{blog.snippet}
+        else 
+            .columns.is-centered
+                .column
+                    .title.has-text-centered.my-6.has-text-weight-normal There is no blogs to display....

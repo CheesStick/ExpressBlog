@@ -1,0 +1,23 @@
+extends ../base.pug
+block content
+    .container
+        .columns.is-centered
+            .column.is-6.my-6
+                .title.has-text-weight-normal #{blog.title}
+                hr
+                .subtitle #{blog.snippet}
+                .subtit #{blog.content}
+                .is-size-6 #{blog.createdAt}
+
+            if user
+                if user.id === blog.authorId.toString() || user.role === ('admin' || 'mod')
+                    .column.my-6.is-1
+                        a(class='delete' data-doc=blog._id)
+                    .column.my-6.is-1
+                        a(href='/blogs/edit/' + blog._id class='update')
+                            i.fas.fa-pen-alt
+
+block scripts
+    if user
+        if user.id === blog.authorId.toString() || user.role === ('admin' || 'mod')
+            script(src='/js/deleteBlog.js')
