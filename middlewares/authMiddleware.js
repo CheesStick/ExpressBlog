@@ -22,7 +22,6 @@ exports.checkUser = (req, res, next) => {
     if (token) {
         jwt.verify(token, '*6t|xy-a#s$r`g1/q=_u', async (err, decodedToken) => {
             if (err) {
-                console.error(err.message);
                 res.locals.user = null;
                 next();
             } else {

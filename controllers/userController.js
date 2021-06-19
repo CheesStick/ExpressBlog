@@ -7,7 +7,6 @@ const { authHandleErrors } = require('../helpers/handleErrors');
 // Account POST Handler
 
 exports.account_post = async (req, res) => {
-    const { username, email } = req.body;
     const id = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
 
     try {
@@ -43,7 +42,7 @@ exports.account_password_update = async (req, res) => {
 
 exports.account_get = (req, res) => {
 
-    User.findById(res.locals.user._id) // .populate('blogs')
+    User.findById(res.locals.user.id) // .populate('blogs')
         .then(user => res.render('users/account', { title: 'Account'}))
         .catch(err => console.log(err));
 
@@ -81,7 +80,6 @@ exports.donate_get = async (req, res) => {
                 }
             ] 
         });
-        console.log(session);
         user.donation += session.amount_total;
         await user.save();
         res.status(200).send({session});

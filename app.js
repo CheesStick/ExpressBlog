@@ -6,7 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
@@ -26,7 +26,7 @@ const dbURI = process.env.MONGO_URI;
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(conn => {
-        console.log(`MongoDB Connected: ${conn.connection.host}`)
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
         app.listen(process.env.PORT, 
         console.log(`Server is runing in ${process.env.NODE_ENV} on ${process.env.PORT}`));
   })
@@ -36,7 +36,9 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFi
 app.set('view engine', 'pug');
 
 // global middlewares
-// app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));

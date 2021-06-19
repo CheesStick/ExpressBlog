@@ -6,9 +6,7 @@ const Email = require('../config/email');
 
 const maxAge = 3 * 24 * 60 * 60;
 
-const createToken = (id) => {
-    return jwt.sign({id}, '*6t|xy-a#s$r`g1/q=_u', {expiresIn: maxAge});
-};
+const createToken = (id) => jwt.sign({id}, '*6t|xy-a#s$r`g1/q=_u', {expiresIn: maxAge});
 
 // Rgestration GET Handler
 
@@ -23,7 +21,7 @@ exports.register_post = async (req, res) => {
     try {
         const user = await User.create({username, email, password, confirmPassword});
         await new Email(user, '').sendWelcome();
-        const token = createToken(user._id);
+        const token = createToken(user.id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
         res.status(201).json({user});
     } catch (err) {
@@ -42,12 +40,11 @@ exports.login_post = (req, res) => {
 
     User.login(email, password)
     .then(user => {
-        const token = createToken(user._id);
+        const token = createToken(user.id);
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
         res.status(200).json(user);
     })
     .catch(err => {
-        console.log(err);
         res.status(400).json(authHandleErrors(err))
     });
 
@@ -83,7 +80,7 @@ exports.forgot_password_post = async (req, res) => {
             user.passwordResetToken = undefined;
             user.passwordResetExpires = undefined;
             await user.save();
-            res.status(500).json({err: err});
+            res.status(500).json({err});
         }
     })
     .catch(err => res.status(400).json(authHandleErrors(err)))
@@ -126,7 +123,7 @@ exports.reset_password_post = async (req, res) => {
     user.passwordExpiresAt = undefined;
     await user.save();
 
-    const token = createToken(user._id);
+    const token = createToken(user.id);
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
     res.status(201).json({user});
 };

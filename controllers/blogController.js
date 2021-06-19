@@ -7,18 +7,21 @@ const User = require('../models/user');
 exports.blog_index = (req, res) => {
 
     Blog.find().sort({createdAt: -1})
-    .then((blogs) => res.render('blogs/blogs', {title: 'Home', blogs: blogs}))
+    .then((blogs) => res.render('blogs/blogs', {title: 'Home', blogs}))
     .catch((err) => console.log(err));
 };
 
 // Blog Details Handler
 
 exports.blog_details = (req, res) => {
-    const id = req.params.id;
+    const {id} = req.params;
 
     Blog.findById(id)
-    .then(blog => res.render('blogs/detail', {title: 'Blog Details' , blog: blog}))
-    .catch(err => res.status(400).redirect('/'));
+    .then(blog => res.render('blogs/detail', {title: 'Blog Details' , blog}))
+    .catch(err => {
+        console.log(err);
+        res.status(400).redirect('/');
+    });
 };
 
 // Blog Create GET Handler
@@ -32,24 +35,27 @@ exports.blog_create_get = (req, res) => {
 exports.blog_create_post = async (req, res) => {
 
     const {title, snippet, content} = req.body;
-    const id = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
-    const user = await User.findById(decodedToken);
+    const {id} = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u');
+    const user = await User.findById(id);
 
     Blog.create({title, snippet, content, author: user.username, authorId: user.id})
     .then(blog => res.redirect('/blogs'))
-    .catch(err => res.status(403).redirect('/blogs/create'));
+    .catch(err => {
+        console.log(err);
+        res.status(403).redirect('/blogs/create');
+    });
 };
 
 // Blog Edit GET Handler
 
 exports.blog_edit_get = async (req, res) => {
 
-    const id = req.params.id;
-    const decodedToken = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u');
+    const {id} = req.params;
+    const userId = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
 
     const blog = await Blog.findById(id);
     
-    if (blog.authorId.toString() === decodedToken.id) res.render('blogs/edit', {title: 'Edit-Blog', blog: blog});
+    if (blog.authorId.toString() === userId) res.render('blogs/edit', {title: 'Edit-Blog', blog});
     res.status(403).redirect('/blogs');
 };
 
@@ -57,26 +63,32 @@ exports.blog_edit_get = async (req, res) => {
 
 exports.blog_edit_post = async (req, res) => {
 
-    const id = req.params.id;
+    const {id} = req.params;
     const {title, snippet, content} = req.body;
 
-    const decodedToken = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u');
-    const user = await User.findById(decodedToken.id);
+    const userId = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
+    const user = await User.findById(userId);
 
     Blog.findOneAndUpdate(id, {
             title, snippet, content,
             author: user.username}, {new: true})
-    .then(blog => res.redirect(`/blogs/${blog._id}`))
-    .catch(err => res.status(400).redirect('/blogs'));
+    .then(blog => res.redirect(`/blogs/${blog.id}`))
+    .catch(err => {
+        console.log(err);
+        res.status(400).redirect('/blogs')
+    });
 };
 
 // Blog DELETE Handler
 
 exports.blog_delete = async (req, res) => {
 
-    const id = req.params.id;
+    const {id} = req.params;
   
     Blog.findOneAndDelete(id)
     .then(blog => res.json({redirect: '/blogs'}))
-    .catch(err => res.status(403).redirect('/blogs'));
+    .catch(err => {
+        console.log(err);
+        res.status(403).redirect('/blogs')
+    });
 };

@@ -1,5 +1,4 @@
 const authHandleErrors = (err) => {
-    console.log(err);
     let errors = {username: '', email: '', password: '',  confirmPassword: ''};
 
     // login errors

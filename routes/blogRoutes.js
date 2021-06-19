@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const blogController = require('../controllers/blogController');
-const requireAuth = require('../middlewares/authMiddleware').requireAuth;
+const {requireAuth} = require('../middlewares/authMiddleware');
 
 // blog routes
 router.get('/create', requireAuth, blogController.blog_create_get);
