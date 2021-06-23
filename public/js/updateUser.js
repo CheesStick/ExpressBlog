@@ -37,18 +37,15 @@ const passwordSettingsForm = document.querySelector('.passwordSettingsForm');
 
 const currentPasswordErr = document.querySelector('.currentPassword');
 const passwordErr = document.querySelector('.password');
-const confirmPasswordErr = document.querySelector('.confirmPassword');
 
 passwordSettingsForm.addEventListener('submit', async e => {
     e.preventDefault();
 
     currentPasswordErr.textContent = '';
     passwordErr.textContent = '';
-    confirmPasswordErr.textContent = '';
 
     const currentPassword = passwordSettingsForm.currentPassword.value;
     const password = passwordSettingsForm.password.value;
-    const confirmPassword = passwordSettingsForm.confirmPassword.value;
 
     try {
         const res = await fetch('/account-passwordUpdate', {
@@ -61,7 +58,6 @@ passwordSettingsForm.addEventListener('submit', async e => {
         if (data.errors) {
             if (data.errors.password === 'incorrect password') currentPasswordErr.textContent = data.errors.password;
             passwordErr.textContent = data.errors.password;
-            confirmPasswordErr.textContent = data.errors.confirmPassword;
         }
 
         if (data.user) console.log('password was updated!');

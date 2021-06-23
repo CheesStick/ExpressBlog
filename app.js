@@ -43,7 +43,7 @@ app.use(helmet({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(authMiddleware.limiter);
 app.use(express.json({limit: '10kb'}));
 app.use(mongoSanitize());
