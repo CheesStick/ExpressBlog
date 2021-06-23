@@ -7,24 +7,26 @@ const { authHandleErrors } = require('../helpers/handleErrors');
 // Account POST Handler
 
 exports.account_post = async (req, res) => {
-    const id = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
-
+    const id = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
+    const {username, email} = req.body;
     try {
         const user = await User.findById(id);
         
         if (req.file) user.photo = req.file.filename;
+        user.username = username;
+        user.email = email;
 
         await user.save();
         res.status(201).json({user});
     } catch (err) {
-        res.status(400).json(authHandleErrors(err), 'error');
+        res.status(400).json(authHandleErrors(err));
     }
 };
 
 // Account POST Password Update
 exports.account_password_update = async (req, res) => {
     const {currentPassword, password} = req.body;
-    const id = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
+    const id = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
     
     try {
         const user = await User.findById(id);
@@ -51,7 +53,7 @@ exports.account_get = (req, res) => {
 // Account DELETE Handler
 
 exports.account_delete = async (req, res) => {
-    const id = await  jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
+    const id = await  jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
 
     User.findByIdAndDelete(id)
         .then(user => res.cookie('jwt', '', { maxAge: 1 }).status(200).json({ redirect: '/blogs' }))
@@ -61,7 +63,7 @@ exports.account_delete = async (req, res) => {
 // Donation GET Handler
 
 exports.donate_get = async (req, res) => {
-    const id = await  jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
+    const id = await  jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
     try {
         const user = await User.findById(id);
         const session = await stripe.checkout.sessions.create({

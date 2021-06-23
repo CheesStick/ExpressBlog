@@ -10,4 +10,4 @@
 - redsiging the UI based on modern ways
 - implementing sass (BEM) And React
 - GoogleOauth and other Oauth services
-- adding coments model
+- adding coments model and furthur more advanced error handlers

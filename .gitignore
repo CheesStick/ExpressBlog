@@ -1,5 +1,5 @@
 *.env
 node_modules
-*.json
+.eslintrc.json
 .prettierrc
 access.log

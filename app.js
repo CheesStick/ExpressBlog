@@ -1,5 +1,4 @@
 const express = require('express');
-
 const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
@@ -10,6 +9,8 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const compression = require('compression');
+
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -23,11 +24,12 @@ dotenv.config({path: path.join(__dirname, 'config/config.env')});
 
 // connect to mongodb
 const dbURI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 3000;
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(conn => {
         console.log(`MongoDB Connected: ${conn.connection.host}`);
-        app.listen(process.env.PORT, 
+        app.listen(PORT, 
         console.log(`Server is runing in ${process.env.NODE_ENV} on ${process.env.PORT}`));
   })
   .catch(err => console.log(err));
@@ -48,6 +50,7 @@ app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
 app.use(cookieParser());
+app.use(compression());
 
 // log requests to the file access.log
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});

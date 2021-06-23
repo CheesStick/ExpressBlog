@@ -11,9 +11,9 @@ module.exports = class Email {
     }
 
     newTransport() {
-        if (process.env.NODE_ENV === 'production') {
+        // if (process.env.NODE_ENV === 'production') {
             // for production use sedgrid
-        }
+        // }
 
         return nodemailer.createTransport({
             host: process.env.EMAIL_HOST,

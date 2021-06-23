@@ -23,16 +23,16 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Enter a password!'],
         minlength: [6, 'The password must be more than 6 characters in length']
     },
-    confirmPassword: {
-        type: String,
-        // required: [true, 'password confirm is needed'],
-        validate: {
-            validator: function(el) {
-                return el === this.password;
-            },
-            message: 'passwords are not the same'
-        }
-    },
+    // confirmPassword: {
+    //     type: String,
+    //     // required: [true, 'password confirm is needed'],
+    //     validate: {
+    //         validator: function(el) {
+    //             return el === this.password;
+    //         },
+    //         message: 'passwords are not the same'
+    //     }
+    // },
     role: {
         type: String,
         enum: ['user', 'mod', 'admin'],

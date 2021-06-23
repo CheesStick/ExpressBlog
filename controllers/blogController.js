@@ -35,7 +35,7 @@ exports.blog_create_get = (req, res) => {
 exports.blog_create_post = async (req, res) => {
 
     const {title, snippet, content} = req.body;
-    const {id} = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u');
+    const {id} = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY);
     const user = await User.findById(id);
 
     Blog.create({title, snippet, content, author: user.username, authorId: user.id})
@@ -51,7 +51,7 @@ exports.blog_create_post = async (req, res) => {
 exports.blog_edit_get = async (req, res) => {
 
     const {id} = req.params;
-    const userId = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
+    const userId = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
 
     const blog = await Blog.findById(id);
     
@@ -66,7 +66,7 @@ exports.blog_edit_post = async (req, res) => {
     const {id} = req.params;
     const {title, snippet, content} = req.body;
 
-    const userId = await jwt.verify(req.cookies.jwt, '*6t|xy-a#s$r`g1/q=_u').id;
+    const userId = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
     const user = await User.findById(userId);
 
     Blog.findOneAndUpdate(id, {

@@ -21,10 +21,9 @@ accountSettingsForm.addEventListener('submit', async e => {
         });
 
         const data = await res.json();
-
-        if (data.err) {
-            usernameErr.textContent = data.username;
-            emailErr.textContent = data.email;
+        if (data.errors) {
+            usernameErr.textContent = data.errors.username;
+            emailErr.textContent = data.errors.email;
         }
         if (data.user) location.assign('/account');
     } catch (err) {
