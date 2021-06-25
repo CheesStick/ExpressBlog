@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
+const cors = require('cors');
 
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -40,6 +41,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFi
 app.set('view engine', 'pug');
 
 // global middlewares
+app.use(cors());
 app.use(helmet({
   contentSecurityPolicy: false
 }));
