@@ -42,6 +42,7 @@ app.set('view engine', 'pug');
 
 // global middlewares
 app.use(cors());
+app.options('*', cors());
 app.use(helmet({
   contentSecurityPolicy: false
 }));

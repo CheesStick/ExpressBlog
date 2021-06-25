@@ -77,7 +77,7 @@ exports.donate_get = async (req, res) => {
                 {
                     name: `${user.username}, Donation!`,
                     description: 'we are thankfull for your financial contribution',
-                    amount: 1000 * 1000,
+                    amount: 10 * 100,
                     currency: 'usd',
                     quantity: 1
                 }
