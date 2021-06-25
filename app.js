@@ -28,27 +28,13 @@ dotenv.config({path: path.join(__dirname, 'config/config.env')});
 const dbURI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
 
-const conn = mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
-if (!conn) console.log(conn);
-console.log(`MongoDB Connected: ${conn.connection.host}`);
-const server = app.listen(PORT,
-   console.log(`Server is runing in ${process.env.NODE_ENV} on ${process.env.PORT}`));
-
-process.on('unhandledRejection', err => {
-  console.log('UNHANDLED REJECTION 💣 Shutting down');
-  console.log(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
-  });
-});
-
-process.on('SIGTERM', err => {
-  console.log('👋 SIGTERM RECIEVED. Shutting down gracefully');
-  server.close(() => {
-    console.log('💣 process terminated!');
-    process.exit(1);
-  });
-});
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+  .then(conn => {
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+        app.listen(PORT, 
+        console.log(`Server is runing in ${process.env.NODE_ENV} on ${process.env.PORT}`));
+  })
+  .catch(err => console.log(err));
 
 // register a view engine
 app.set('view engine', 'pug');
