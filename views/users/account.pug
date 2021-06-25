@@ -10,7 +10,7 @@ block content
                         img.is-rounded(src="assets/images/default.jpg" alt="Profile image")
                 else
                     figure.image.is-96x96
-                        img.is-rounded(src="/assets/images/" + user.photo alt="Profile image")
+                        img.is-rounded(src="assets/images/" + user.photo alt="Profile image")
 
             .column.is-4.mt-6
                 .subtitle Username: #{user.username}
@@ -58,7 +58,7 @@ block content
                     .field
                         label.label(for='currentPassword') Current Password :
                         .control.has-icons-left
-                            input.input(type='password' id='currentPassword' placeholder='current password' name='currentPassword')
+                            input.input(type='password' id='currentPassword' placeholder='current password' name='currentPassword' required)
                             span.icon.is-small.is-left
                                 i.fas.fa-lock
                         p.is-danger.help.currentPassword

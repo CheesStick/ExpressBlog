@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')('sk_test_51J2YoQJDNyAkL5CQK7apM61OKPjYlPDsztjVIIN53uASCwsEuQ4MaTLyYj6DJMCRmNgkFr61FMEn4V8AJMHIum0f008e3Ju6b6');
 const User = require('../models/user');
 const { authHandleErrors } = require('../helpers/handleErrors');
 
@@ -30,11 +30,12 @@ exports.account_password_update = async (req, res) => {
     
     try {
         const user = await User.findById(id);
-        const auth = await bcrypt.compare(currentPassword, user.password);
-        if (!auth) throw Error('incorrect password');
-        user.password = password;
-        await user.save();
-        res.status(201).json({user});
+        const auth = await bcrypt.compare(currentPassword, user.password)
+        if (auth) {
+            user.password = password;
+            await user.save();
+            res.status(201).json({user});
+        } throw Error('incorrect password');
     } catch (err) {
         res.status(400).json(authHandleErrors(err));
     }
@@ -86,7 +87,6 @@ exports.donate_get = async (req, res) => {
         await user.save();
         res.status(200).send({session});
     } catch (err) {
-        console.log(err);
         res.status(500).send({err});
     }
 

@@ -56,11 +56,11 @@ passwordSettingsForm.addEventListener('submit', async e => {
 
         const data = await res.json();
         if (data.errors) {
-            if (data.errors.password === 'incorrect password') currentPasswordErr.textContent = data.errors.password;
-            passwordErr.textContent = data.errors.password;
+            if (data.errors.password === 'incorrect password') passwordErr.textContent = data.errors.password;;
+            currentPasswordErr.textContent = data.errors.password
         }
 
-        if (data.user) console.log('password was updated!');
+        if (data.user) location.assign('/account');
     } catch (err) {
         console.log(err);
     }
@@ -84,8 +84,9 @@ donate.addEventListener('click', async e => {
     e.target.classList.remove('fas', 'fa-donate');
     e.target.textContent = 'Processing...';
     try {
-        const res = await fetch('http://127.0.0.1:8080/donate');
+        const res = await fetch('/donate');
         const data = await res.json();
+        console.log(data);
         stripe.redirectToCheckout({sessionId: data.session.id});
     } catch (err) {
         console.log(err);
