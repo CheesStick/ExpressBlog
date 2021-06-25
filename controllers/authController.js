@@ -6,7 +6,7 @@ const Email = require('../config/email');
 
 const maxAge = 3 * 24 * 60 * 60;
 
-const createToken = (id) => jwt.sign({id}, process.env.JWT_SECRET_KEY, {expiresIn: maxAge});
+const createToken = (id) => jwt.sign({id}, process.env.JWT_SECRET_KEY, {expiresIn: maxAge, secure: true});
 
 // Rgestration GET Handler
 
