@@ -30,7 +30,7 @@ exports.account_password_update = async (req, res) => {
     
     try {
         const user = await User.findById(id);
-        const auth = await bcrypt.compare(currentPassword, user.password)
+        const auth = await bcrypt.compare(currentPassword, user.password);
         if (auth) {
             user.password = password;
             await user.save();
