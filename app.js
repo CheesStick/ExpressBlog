@@ -15,6 +15,7 @@ const cors = require('cors');
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 const authMiddleware = require('./middlewares/authMiddleware');
 
 // express app
@@ -67,6 +68,9 @@ app.get('*', authMiddleware.checkUser);
 app.get('/', (req, res) => res.redirect('/blogs'));
 
 app.get('/about', (req, res) => res.render('about', {title: 'About'}));
+
+// api routes
+app.use('/api/v1', apiRoutes);
 
 // blog routes
 app.use('/blogs', blogRoutes);
