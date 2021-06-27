@@ -7,7 +7,7 @@ router
     .get(apiController.api_blogs_get);
 
 router
-    .route('/:author')
+    .route('/blogs/:author')
     .get(apiController.api_blog_get);
 
 module.exports = router;
