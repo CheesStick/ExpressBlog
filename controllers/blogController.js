@@ -49,11 +49,9 @@ exports.blog_create_post = async (req, res) => {
 // Blog Edit GET Handler
 
 exports.blog_edit_get = async (req, res) => {
-
-    const {id} = req.params;
     const userId = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(req.params.id);
     
     if (blog.authorId.toString() === userId) res.render('blogs/edit', {title: 'Edit-Blog', blog});
     if (blog.authorId.toString() !== userId)res.status(403).redirect('/blogs');
@@ -62,11 +60,9 @@ exports.blog_edit_get = async (req, res) => {
 // Blog Edit POST Handler
 
 exports.blog_edit_post = async (req, res) => {
-    
-    const {id} = req.params;
     const {title, snippet, content} = req.body;
 
-    Blog.findOneAndUpdate(id, {title, snippet, content}, {new: true})
+    Blog.findOneAndUpdate(req.params.id, {title, snippet, content}, {new: true})
     .then(blog => res.status(201).redirect(`/blogs/${blog.id}`))
     .catch(err => {
         console.log(err);
@@ -77,10 +73,8 @@ exports.blog_edit_post = async (req, res) => {
 // Blog DELETE Handler
 
 exports.blog_delete = async (req, res) => {
-
-    const {id} = req.params;
   
-    Blog.findOneAndDelete(id)
+    Blog.findByIdAndDelete(req.params.id)
     .then(blog => res.json({redirect: '/blogs'}))
     .catch(err => {
         console.log(err);
