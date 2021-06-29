@@ -23,16 +23,16 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Enter a password!'],
         minlength: [6, 'The password must be more than 6 characters in length']
     },
-    // confirmPassword: {
-    //     type: String,
-    //     // required: [true, 'password confirm is needed'],
-    //     validate: {
-    //         validator: function(el) {
-    //             return el === this.password;
-    //         },
-    //         message: 'passwords are not the same'
-    //     }
-    // },
+    confirmPassword: {
+        type: String,
+        required: [true, 'password confirm is needed'],
+        validate: {
+            validator: function(el) {
+                return el === this.password;
+            },
+            message: 'passwords are not the same'
+        }
+    },
     role: {
         type: String,
         enum: ['user', 'mod', 'admin'],
@@ -66,12 +66,6 @@ userSchema.pre('save', async function (next) {
     this.confirmPassword = undefined;
     next();
 });
-
-// // userSchema.pre('save', async function(next) {
-// //     const blogsPromises = this.blogs.map(async id => await Blog.find({authorId: id}));
-// //     this.blogs = await Promise.all(blogsPromises);
-// // next();
-// // });
 
 // static method to login the user
 userSchema.statics.login = async function(email, password) {

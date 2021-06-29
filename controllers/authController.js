@@ -105,7 +105,8 @@ exports.reset_password_get = async (req, res) => {
 
 // ResetPassword POST Handler
 exports.reset_password_post = async (req, res) => {
-
+    const {password, ConfirmPassword} = req.body;
+    
     const hashedToken = crypto
     .createHash('sha256')
     .update(req.params.token)
@@ -117,7 +118,8 @@ exports.reset_password_post = async (req, res) => {
     });
 
     
-    user.password = req.body.password;
+    user.password = password;
+    user.confirmPassword = ConfirmPassword;
     user.passwordChangedAt = Date.now();
     user.passwordResetToken = undefined;
     user.passwordExpiresAt = undefined;

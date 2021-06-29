@@ -6,7 +6,8 @@
 
 # Future features:
 
-- auth with passportJs
+<!-- - auth with passportJs -->
+
 - redsiging the UI based on modern ways
 - implementing sass (BEM) And React
 - GoogleOauth and other Oauth services

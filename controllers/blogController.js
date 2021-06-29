@@ -56,23 +56,18 @@ exports.blog_edit_get = async (req, res) => {
     const blog = await Blog.findById(id);
     
     if (blog.authorId.toString() === userId) res.render('blogs/edit', {title: 'Edit-Blog', blog});
-    res.status(403).redirect('/blogs');
+    if (blog.authorId.toString() !== userId)res.status(403).redirect('/blogs');
 };
 
 // Blog Edit POST Handler
 
 exports.blog_edit_post = async (req, res) => {
-
+    
     const {id} = req.params;
     const {title, snippet, content} = req.body;
 
-    const userId = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
-    const user = await User.findById(userId);
-
-    Blog.findOneAndUpdate(id, {
-            title, snippet, content,
-            author: user.username}, {new: true})
-    .then(blog => res.redirect(`/blogs/${blog.id}`))
+    Blog.findOneAndUpdate(id, {title, snippet, content}, {new: true})
+    .then(blog => res.status(201).redirect(`/blogs/${blog.id}`))
     .catch(err => {
         console.log(err);
         res.status(400).redirect('/blogs')

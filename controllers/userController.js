@@ -19,13 +19,14 @@ exports.account_post = async (req, res) => {
         await user.save();
         res.status(201).json({user});
     } catch (err) {
+        console.log(err);
         res.status(400).json(authHandleErrors(err));
     }
 };
 
 // Account POST Password Update
 exports.account_password_update = async (req, res) => {
-    const {currentPassword, password} = req.body;
+    const {currentPassword, password, confirmPassword} = req.body;
     const id = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
     
     try {
@@ -33,10 +34,12 @@ exports.account_password_update = async (req, res) => {
         const auth = await bcrypt.compare(currentPassword, user.password);
         if (auth) {
             user.password = password;
+            user.confirmPassword = confirmPassword;
             await user.save();
             res.status(201).json({user});
         } throw Error('incorrect password');
     } catch (err) {
+        console.log(err);
         res.status(400).json(authHandleErrors(err));
     }
 }
