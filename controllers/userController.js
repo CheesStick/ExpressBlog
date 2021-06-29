@@ -3,20 +3,27 @@ const jwt = require('jsonwebtoken');
 const stripe = require('stripe')('sk_test_51J2YoQJDNyAkL5CQK7apM61OKPjYlPDsztjVIIN53uASCwsEuQ4MaTLyYj6DJMCRmNgkFr61FMEn4V8AJMHIum0f008e3Ju6b6');
 const User = require('../models/user');
 const { authHandleErrors } = require('../helpers/handleErrors');
+const { findByIdAndUpdate } = require('../models/user');
+
+const filterObj = (obj, ...allowedFields) => {
+    const newObj = {};
+    Object.keys(obj).forEach((el) => {
+      if (allowedFields.includes(el)) newObj[el] = obj[el];
+    });
+    return newObj;
+};
 
 // Account POST Handler
 
 exports.account_post = async (req, res) => {
     const id = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET_KEY).id;
-    const {username, email} = req.body;
+    const {password, confirmPassword} = req.body;
     try {
-        const user = await User.findById(id);
+        if (password || confirmPassword) throw Error('this route is not for password update please use /account-passwordUpdate');
         
-        if (req.file) user.photo = req.file.filename;
-        user.username = username;
-        user.email = email;
-
-        await user.save();
+        const filteredBody = filterObj(req.body, 'username', 'email');
+        if (req.file) filteredBody.photo = req.file.filename;
+        const user = await User.findByIdAndUpdate(id, filteredBody, {new: true, runValidators: true});
         res.status(201).json({user});
     } catch (err) {
         console.log(err);
