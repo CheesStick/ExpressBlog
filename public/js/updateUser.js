@@ -61,7 +61,7 @@ passwordSettingsForm.addEventListener('submit', async e => {
         if (data.errors) {
             if (data.errors.password === 'incorrect password') currentPasswordErr.textContent = data.errors.password;
             if (data.errors.password !== 'incorrect password') passwordErr.textContent = data.errors.password;
-            confirmPassword.textContent = data.errors.confirmPassword;
+            confirmPasswordErr.textContent = data.errors.confirmPassword;
         }
 
         if (data.user) location.assign('/account');
