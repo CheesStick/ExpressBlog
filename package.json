@@ -7,7 +7,7 @@
     "start": "node app",
     "dev": "cross-env NODE_ENV=development nodemon app"
   },
-  "author": "Grand Master",
+  "author": "Mohamed Derk",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
