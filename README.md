@@ -10,8 +10,6 @@
 
 ## Future features:
 
----
-
 - [ ] redsiging the UI based on modern approaches
 - [ ] making the web app responsive
 - [ ] implementing sass (BEM) And React
